@@ -52,9 +52,10 @@ def create_app(test_config=None):
 
     return app
 
+logger = logging.getLogger('tdm')
+logger.setLevel(logging.INFO)
+logger.addHandler(RotatingFileHandler('app.log', maxBytes=100000, backupCount=3))
+app = create_app()
 
 if __name__ == '__main__':
-    logger = logging.getLogger('tdm')
-    logger.setLevel(logging.INFO)
-    logger.addHandler(RotatingFileHandler('app.log', maxBytes=100000, backupCount=3))
-    create_app().run()
+    app.run()
