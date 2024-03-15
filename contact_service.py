@@ -43,5 +43,5 @@ class ContactService:
         }
         self.contacts.append(contact)
         if not app.config['TESTING']:
-          self.save_contacts()
+            self.save_contacts()
         return contact
