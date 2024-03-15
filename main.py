@@ -32,6 +32,12 @@ def create_app(test_config=None):
             return jsonify({"error": "Contact not found"}), 404
         return jsonify({"data": contact})
 
+    @app.route('/contacts/<contact_id>', methods=['DELETE'])
+    def delete_contact(contact_id):
+        if not contact_service.delete_contact(app, contact_id):
+            return jsonify({"error": "Contact not found"}), 404
+        return jsonify({"message": f"Deleted contact with ID: {contact_id}"})
+
     @app.after_request
     def after_request(response):
         if not app.config['TESTING']:

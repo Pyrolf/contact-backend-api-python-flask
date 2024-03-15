@@ -79,7 +79,7 @@ def test_add_contact_success(client):
                                "phone_number": "+6588888888"
                            })
     assert response.status_code == 200
-    assert "Added contact with ID:" in response.json["message"]
+    assert "Added contact with ID: " in response.json["message"]
 
 def test_get_contact_not_found(client):
     response = client.get("/contacts/not-found")
@@ -95,3 +95,14 @@ def test_get_contact_success(client):
         "email": "exist@user.com",
         "phone_number": "+6599999999"
     }
+
+def test_delete_contact_not_found(client):
+    response = client.delete("/contacts/not-found")
+    assert response.status_code == 404
+    assert response.json["error"] == "Contact not found"
+
+def test_get_contact_success(client):
+    id = "5867c016-380a-48a8-8972-a3df1b26b899"
+    response = client.delete(f"/contacts/{id}")
+    assert response.status_code == 200
+    assert f"Deleted contact with ID: {id}" in response.json["message"]

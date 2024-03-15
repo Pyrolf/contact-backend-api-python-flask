@@ -26,14 +26,14 @@ class ContactService:
                 return contact
 
         return None
-    
+
     def generate_id(self):
         while True:
             id = str(uuid.uuid4())
             contact = self.get_contact(id)
             if contact is None:
                 return id
-    
+
     def add_contact(self, app, name, email, phone):
         contact = {
             "_id": self.generate_id(),
@@ -45,3 +45,12 @@ class ContactService:
         if not app.config['TESTING']:
             self.save_contacts()
         return contact
+
+    def delete_contact(self, app, id):
+        contact = self.get_contact(id)
+        if contact is None:
+            return False
+        self.contacts.remove(contact)
+        if not app.config['TESTING']:
+            self.save_contacts()
+        return True
