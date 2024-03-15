@@ -25,6 +25,13 @@ def create_app(test_config=None):
         contact = contact_service.add_contact(app, data["name"], data["email"], data["phone_number"])
         return jsonify({"message": f"Added contact with ID: {contact['_id']}"})
 
+    @app.route('/contacts/<contact_id>', methods=['GET'])
+    def get_contact(contact_id):
+        contact = contact_service.get_contact(contact_id)
+        if contact is None:
+            return jsonify({"error": "Contact not found"}), 404
+        return jsonify({"data": contact})
+
     @app.after_request
     def after_request(response):
         if not app.config['TESTING']:
