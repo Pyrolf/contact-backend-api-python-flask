@@ -41,6 +41,7 @@ def create_app(test_config=None):
     @app.after_request
     def after_request(response):
         if not app.config['TESTING']:
+            # Excluded request/response body as they may contained sensitive information (PII)
             logger.info(f"[INFO] {strftime('[%Y-%m-%d %H:%M:%S]')} {request.remote_addr} {request.method} {request.scheme} {request.full_path} {response.status}")
         return response
 
@@ -52,9 +53,11 @@ def create_app(test_config=None):
 
     return app
 
+# Log into app.log
 logger = logging.getLogger('tdm')
 logger.setLevel(logging.INFO)
 logger.addHandler(RotatingFileHandler('app.log', maxBytes=100000, backupCount=3))
+
 app = create_app()
 
 if __name__ == '__main__':
